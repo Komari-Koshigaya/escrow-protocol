@@ -1,8 +1,6 @@
 package hk.edu.polyu.comp.ecdsa.bitcoin;
 
 import java.math.BigInteger;
-
-import hk.edu.polyu.comp.DebugUtils;
 import hk.edu.polyu.comp.util.BinaryUtils;
 
 public class BitcoinUtils {

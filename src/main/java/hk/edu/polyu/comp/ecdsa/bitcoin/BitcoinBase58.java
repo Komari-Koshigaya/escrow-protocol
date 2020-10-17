@@ -16,12 +16,11 @@
  */
 
 package hk.edu.polyu.comp.ecdsa.bitcoin;
+
+import hk.edu.polyu.comp.util.Hash;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.Arrays;
-
-import hk.edu.polyu.comp.DebugUtils;
-import hk.edu.polyu.comp.util.Hash;
 
 /**
  * Base58 is a way to encode Bitcoin addresses (or arbitrary data) as alphanumeric strings.
@@ -102,8 +101,9 @@ public class BitcoinBase58 {
      * @return the base58-encoded string
      */
     public static String encodeChecked(int version, byte[] payload) {
-        if (version < 0 || version > 255)
+        if (version < 0 || version > 255) {
             throw new IllegalArgumentException("Version not in range.");
+        }
 
         // A stringified buffer is:
         // 1 byte version + data bytes + 4 bytes check code (a truncated hash)
@@ -175,13 +175,15 @@ public class BitcoinBase58 {
      */
     public static byte[] decodeChecked(String input) throws IllegalArgumentException, ParseException {
         byte[] decoded  = decode(input);
-        if (decoded.length < 4)
+        if (decoded.length < 4) {
             throw new IllegalArgumentException("Input too short: " + decoded.length);
+        }
         byte[] data = Arrays.copyOfRange(decoded, 0, decoded.length - 4);
         byte[] checksum = Arrays.copyOfRange(decoded, decoded.length - 4, decoded.length);
         byte[] actualChecksum = Arrays.copyOfRange(Hash.sha256(Hash.sha256(data)), 0, 4);
-        if (!Arrays.equals(checksum, actualChecksum))
+        if (!Arrays.equals(checksum, actualChecksum)) {
             throw new IllegalArgumentException("Invalid checksum");
+        }
         return data;
     }
 

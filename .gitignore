@@ -8,3 +8,8 @@
 .vscode
 node_modules
 
+# idea
+.idea
+*.iml
+*.class
+target
